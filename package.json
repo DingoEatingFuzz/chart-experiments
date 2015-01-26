@@ -1,0 +1,13 @@
+{
+  "name": "chart-experiments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "d3": "^3.5.3",
+    "gm": "^1.17.0",
+    "jsdom": "^3.0.2"
+  }
+}
