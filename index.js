@@ -3,7 +3,7 @@ var fs = require('fs');
 var gm = require('gm');
 var Readable = require('stream').Readable;
 
-var chart = require('./chart');
+var chart = require('./bar-chart');
 var svgStream = new Readable;
 
 var svgPreamble = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
@@ -12,7 +12,7 @@ jsdom.env({
   html: '<html><svg/></html>',
   done: function(err, window) {
     var el = window.document.getElementsByTagName('svg')[0];
-    var css = chart(el) || '';
+    var css = chart(el, window) || '';
 
     var svgAttrs = Array.prototype.slice.call(el.attributes).map(function(attr) {
       return attr.nodeName + '="' + attr.nodeValue + '"';
@@ -39,9 +39,8 @@ jsdom.env({
     svgStream.push(null);
 
     gm(svgStream, 'chart.svg')
-      .options({ imageMagick: true })
+      // .options({ imageMagick: true })
       .write('chart.png', function(pngErr) {
-        console.log(pngErr ? 'oops: ' + pngErr : 'done');
         process.exit();
       });
   }
