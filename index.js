@@ -1,6 +1,7 @@
 var jsdom = require('jsdom');
 var fs = require('fs');
 var gm = require('gm');
+var juice = require('juice2');
 var Readable = require('stream').Readable;
 
 var chart = require('./bar-chart');
@@ -21,18 +22,13 @@ jsdom.env({
     svgAttrs.push('version="1.1"');
 
     var svg = [
-      svgPreamble,
       '<svg ' + svgAttrs.join(' ') + '>',
-        '<defs>',
-          '<style type="text/css"><![CDATA[',
-            css,
-          ']]></style>',
-        '</defs>',
-        '<svg>',
-          el.innerHTML,
-        '</svg>',
+        el.innerHTML,
       '</svg>'
     ].join('\n');
+
+    svg = svgPreamble + '\n' + juice.inlineContent(svg, css).replace(/<\/?(html|body)>/g, '');
+    svg = svg.trim();
 
     console.log(svg);
     svgStream.push(svg);
@@ -41,6 +37,7 @@ jsdom.env({
     gm(svgStream, 'chart.svg')
       .options({ imageMagick: true })
       .write('chart.png', function(pngErr) {
+        // console.log(pngErr ? 'oops: ' + pngErr : 'done');
         process.exit();
       });
   }

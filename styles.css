@@ -3,7 +3,8 @@
 }
 
 .axis {
-  font: 10px 'Helvetica';
+  font-size: 10px;
+  font-family: 'Helvetica';
 }
 
 .axis path,
