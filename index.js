@@ -39,7 +39,7 @@ jsdom.env({
     svgStream.push(null);
 
     gm(svgStream, 'chart.svg')
-      // .options({ imageMagick: true })
+      .options({ imageMagick: true })
       .write('chart.png', function(pngErr) {
         process.exit();
       });
